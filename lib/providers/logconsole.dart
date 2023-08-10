@@ -23,14 +23,13 @@ class LogConsoleProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  int get count => db.appLogs.countSync();
+  int get count => db.appLogs.count();
   AppLog? index(int n) {
-    final ids =
-        db.appLogs.where().sortByTimeDesc().isarIdProperty().findAllSync();
-    return db.appLogs.getSync(ids[n])!;
+    final ids = db.appLogs.where().sortByTimeDesc().idProperty().findAll();
+    return db.appLogs.get(ids[n])!;
   }
 
-  void clear() => db.writeTxnSync(() => db.appLogs.clearSync());
+  void clear() => db.write((db) => db.appLogs.clear());
 
   String exportCurrentRun() {
     final firstRecord = db.appLogs
