@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:frigoligo/constants.dart';
 import 'package:isar/isar.dart';
 import 'package:logging/logging.dart';
@@ -16,12 +17,21 @@ class DB {
   static Future<void> init(bool devmode) async {
     if (_instance != null) return;
 
-    final dir = await getApplicationDocumentsDirectory();
-    _instance = Isar.open(
-      schemas: [AppLogSchema, ArticleSchema, ArticleScrollPositionSchema],
-      directory: dir.path,
-      name: 'frigoligo${devmode ? '-dev' : ''}',
-    );
+    if (!kIsWeb) {
+      final dir = await getApplicationDocumentsDirectory();
+      _instance = Isar.open(
+        schemas: [AppLogSchema, ArticleSchema, ArticleScrollPositionSchema],
+        directory: dir.path,
+        name: 'frigoligo${devmode ? '-dev' : ''}',
+      );
+    } else {
+      await Isar.initialize();
+      _instance = Isar.open(
+        schemas: [AppLogSchema, ArticleSchema, ArticleScrollPositionSchema],
+        directory: Isar.sqliteInMemory,
+        engine: IsarEngine.sqlite,
+      );
+    }
     _prepareAppLogs();
   }
 

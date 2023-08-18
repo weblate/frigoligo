@@ -6,7 +6,7 @@ part 'app_log.g.dart';
 @collection
 class AppLog {
   String id;
-  int get isarId => fastHash(id);
+  int get isarId => Isar.fastHash(id);
 
   DateTime time;
   String level;
@@ -40,21 +40,5 @@ class AppLog {
       message: record.message,
       error: record.error?.toString(),
     );
-  }
-
-  int fastHash(String string) {
-    // FIXME this value breaks the compilation to JS
-    var hash = 0xcbf29ce484222325;
-
-    var i = 0;
-    while (i < string.length) {
-      final codeUnit = string.codeUnitAt(i++);
-      hash ^= codeUnit >> 8;
-      hash *= 0x100000001b3;
-      hash ^= codeUnit & 0xFF;
-      hash *= 0x100000001b3;
-    }
-
-    return hash;
   }
 }
