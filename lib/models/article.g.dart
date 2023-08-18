@@ -14,16 +14,79 @@ extension GetArticleCollection on Isar {
   IsarCollection<int, Article> get articles => this.collection();
 }
 
-const ArticleSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"Article","idName":"id","properties":[{"name":"createdAt","type":"DateTime"},{"name":"updatedAt","type":"DateTime"},{"name":"title","type":"String"},{"name":"domainName","type":"String"},{"name":"url","type":"String"},{"name":"content","type":"String"},{"name":"language","type":"String"},{"name":"readingTime","type":"Long"},{"name":"previewPicture","type":"String"},{"name":"archivedAt","type":"DateTime"},{"name":"starredAt","type":"DateTime"},{"name":"tags","type":"StringList"},{"name":"stateValue","type":"Byte","enumMap":{"all":0,"unread":1,"archived":2}},{"name":"starredValue","type":"Byte","enumMap":{"all":0,"starred":1,"unstarred":2}}]}',
+const ArticleSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'Article',
+    idName: 'id',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'createdAt',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'updatedAt',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'title',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'domainName',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'url',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'content',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'language',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'readingTime',
+        type: IsarType.long,
+      ),
+      IsarPropertySchema(
+        name: 'previewPicture',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'archivedAt',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'starredAt',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'tags',
+        type: IsarType.stringList,
+      ),
+      IsarPropertySchema(
+        name: 'stateValue',
+        type: IsarType.byte,
+        enumMap: {"all": 0, "unread": 1, "archived": 2},
+      ),
+      IsarPropertySchema(
+        name: 'starredValue',
+        type: IsarType.byte,
+        enumMap: {"all": 0, "starred": 1, "unstarred": 2},
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<int, Article>(
     serialize: serializeArticle,
     deserialize: deserializeArticle,
     deserializeProperty: deserializeArticleProp,
   ),
   embeddedSchemas: [],
-  //hash: 3746757449793512258,
 );
 
 @isarProtected
@@ -485,6 +548,59 @@ extension ArticleQueryUpdate on IsarQuery<Article> {
       _ArticleQueryUpdateImpl(this, limit: 1);
 
   _ArticleQueryUpdate get updateAll => _ArticleQueryUpdateImpl(this);
+}
+
+class _ArticleQueryBuilderUpdateImpl implements _ArticleQueryUpdate {
+  const _ArticleQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<Article, Article, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? createdAt = ignore,
+    Object? updatedAt = ignore,
+    Object? title = ignore,
+    Object? domainName = ignore,
+    Object? url = ignore,
+    Object? content = ignore,
+    Object? language = ignore,
+    Object? readingTime = ignore,
+    Object? previewPicture = ignore,
+    Object? archivedAt = ignore,
+    Object? starredAt = ignore,
+    Object? stateValue = ignore,
+    Object? starredValue = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (createdAt != ignore) 1: createdAt as DateTime?,
+        if (updatedAt != ignore) 2: updatedAt as DateTime?,
+        if (title != ignore) 3: title as String?,
+        if (domainName != ignore) 4: domainName as String?,
+        if (url != ignore) 5: url as String?,
+        if (content != ignore) 6: content as String?,
+        if (language != ignore) 7: language as String?,
+        if (readingTime != ignore) 8: readingTime as int?,
+        if (previewPicture != ignore) 9: previewPicture as String?,
+        if (archivedAt != ignore) 10: archivedAt as DateTime?,
+        if (starredAt != ignore) 11: starredAt as DateTime?,
+        if (stateValue != ignore) 13: stateValue as StateFilter?,
+        if (starredValue != ignore) 14: starredValue as StarredFilter?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension ArticleQueryBuilderUpdate
+    on QueryBuilder<Article, Article, QOperations> {
+  _ArticleQueryUpdate get updateFirst =>
+      _ArticleQueryBuilderUpdateImpl(this, limit: 1);
+
+  _ArticleQueryUpdate get updateAll => _ArticleQueryBuilderUpdateImpl(this);
 }
 
 const _articleStateValue = {

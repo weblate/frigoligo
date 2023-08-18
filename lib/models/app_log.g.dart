@@ -14,16 +14,53 @@ extension GetAppLogCollection on Isar {
   IsarCollection<String, AppLog> get appLogs => this.collection();
 }
 
-const AppLogSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"AppLog","idName":"id","properties":[{"name":"id","type":"String"},{"name":"time","type":"DateTime"},{"name":"level","type":"String"},{"name":"loggerName","type":"String"},{"name":"message","type":"String"},{"name":"error","type":"String"},{"name":"isarId","type":"Long"},{"name":"logline","type":"String"}]}',
+const AppLogSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'AppLog',
+    idName: 'id',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'id',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'time',
+        type: IsarType.dateTime,
+      ),
+      IsarPropertySchema(
+        name: 'level',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'loggerName',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'message',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'error',
+        type: IsarType.string,
+      ),
+      IsarPropertySchema(
+        name: 'isarId',
+        type: IsarType.long,
+      ),
+      IsarPropertySchema(
+        name: 'logline',
+        type: IsarType.string,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<String, AppLog>(
     serialize: serializeAppLog,
     deserialize: deserializeAppLog,
     deserializeProperty: deserializeAppLogProp,
   ),
   embeddedSchemas: [],
-  //hash: 5796967002572467642,
 );
 
 @isarProtected
@@ -245,6 +282,47 @@ extension AppLogQueryUpdate on IsarQuery<AppLog> {
   _AppLogQueryUpdate get updateFirst => _AppLogQueryUpdateImpl(this, limit: 1);
 
   _AppLogQueryUpdate get updateAll => _AppLogQueryUpdateImpl(this);
+}
+
+class _AppLogQueryBuilderUpdateImpl implements _AppLogQueryUpdate {
+  const _AppLogQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<AppLog, AppLog, QOperations> query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? time = ignore,
+    Object? level = ignore,
+    Object? loggerName = ignore,
+    Object? message = ignore,
+    Object? error = ignore,
+    Object? isarId = ignore,
+    Object? logline = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (time != ignore) 2: time as DateTime?,
+        if (level != ignore) 3: level as String?,
+        if (loggerName != ignore) 4: loggerName as String?,
+        if (message != ignore) 5: message as String?,
+        if (error != ignore) 6: error as String?,
+        if (isarId != ignore) 7: isarId as int?,
+        if (logline != ignore) 8: logline as String?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension AppLogQueryBuilderUpdate
+    on QueryBuilder<AppLog, AppLog, QOperations> {
+  _AppLogQueryUpdate get updateFirst =>
+      _AppLogQueryBuilderUpdateImpl(this, limit: 1);
+
+  _AppLogQueryUpdate get updateAll => _AppLogQueryBuilderUpdateImpl(this);
 }
 
 extension AppLogQueryFilter on QueryBuilder<AppLog, AppLog, QFilterCondition> {

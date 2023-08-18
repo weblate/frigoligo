@@ -41,8 +41,8 @@ dependencies:
   flutter_widget_from_html_core: ^0.10.1
   shared_preferences: ^2.1.2
   logging: ^1.2.0
-  isar: ^4.0.0-dev.9
-  isar_flutter_libs: ^4.0.0-dev.9
+  isar: ^4.0.0-dev.10
+  isar_flutter_libs: ^4.0.0-dev.10
   path_provider: ^2.0.15
   fwfh_url_launcher: ^0.9.0+2
   fwfh_cached_network_image: ^0.7.0+5

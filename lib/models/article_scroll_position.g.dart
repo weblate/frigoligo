@@ -15,16 +15,29 @@ extension GetArticleScrollPositionCollection on Isar {
       this.collection();
 }
 
-const ArticleScrollPositionSchema = IsarCollectionSchema(
-  schema:
-      '{"name":"ArticleScrollPosition","idName":"id","properties":[{"name":"readingTime","type":"Long"},{"name":"position","type":"Double"}]}',
+const ArticleScrollPositionSchema = IsarGeneratedSchema(
+  schema: IsarSchema(
+    name: 'ArticleScrollPosition',
+    idName: 'id',
+    embedded: false,
+    properties: [
+      IsarPropertySchema(
+        name: 'readingTime',
+        type: IsarType.long,
+      ),
+      IsarPropertySchema(
+        name: 'position',
+        type: IsarType.double,
+      ),
+    ],
+    indexes: [],
+  ),
   converter: IsarObjectConverter<int, ArticleScrollPosition>(
     serialize: serializeArticleScrollPosition,
     deserialize: deserializeArticleScrollPosition,
     deserializeProperty: deserializeArticleScrollPositionProp,
   ),
   embeddedSchemas: [],
-  //hash: 5542298981403528715,
 );
 
 @isarProtected
@@ -162,6 +175,40 @@ extension ArticleScrollPositionQueryUpdate on IsarQuery<ArticleScrollPosition> {
 
   _ArticleScrollPositionQueryUpdate get updateAll =>
       _ArticleScrollPositionQueryUpdateImpl(this);
+}
+
+class _ArticleScrollPositionQueryBuilderUpdateImpl
+    implements _ArticleScrollPositionQueryUpdate {
+  const _ArticleScrollPositionQueryBuilderUpdateImpl(this.query, {this.limit});
+
+  final QueryBuilder<ArticleScrollPosition, ArticleScrollPosition, QOperations>
+      query;
+  final int? limit;
+
+  @override
+  int call({
+    Object? readingTime = ignore,
+    Object? position = ignore,
+  }) {
+    final q = query.build();
+    try {
+      return q.updateProperties(limit: limit, {
+        if (readingTime != ignore) 1: readingTime as int?,
+        if (position != ignore) 2: position as double?,
+      });
+    } finally {
+      q.close();
+    }
+  }
+}
+
+extension ArticleScrollPositionQueryBuilderUpdate
+    on QueryBuilder<ArticleScrollPosition, ArticleScrollPosition, QOperations> {
+  _ArticleScrollPositionQueryUpdate get updateFirst =>
+      _ArticleScrollPositionQueryBuilderUpdateImpl(this, limit: 1);
+
+  _ArticleScrollPositionQueryUpdate get updateAll =>
+      _ArticleScrollPositionQueryBuilderUpdateImpl(this);
 }
 
 extension ArticleScrollPositionQueryFilter on QueryBuilder<

@@ -33,17 +33,17 @@ class LogConsoleProvider extends ChangeNotifier {
 
   String exportCurrentRun() {
     final firstRecord = db.appLogs
-        .filter()
+        .where()
         .messageEqualTo('starting app')
         .sortByTimeDesc()
-        .findFirstSync();
+        .findFirst();
     if (firstRecord == null) return '';
 
     final records = db.appLogs
-        .filter()
+        .where()
         .timeGreaterThan(firstRecord.time)
         .sortByTime()
-        .findAllSync();
+        .findAll();
     final lines = records.map((r) => r.logline).toList();
     return lines.join('\n');
   }

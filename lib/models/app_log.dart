@@ -43,6 +43,7 @@ class AppLog {
   }
 
   int fastHash(String string) {
+    // FIXME this value breaks the compilation to JS
     var hash = 0xcbf29ce484222325;
 
     var i = 0;

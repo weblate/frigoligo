@@ -58,21 +58,16 @@ class ArticlesProvider with ChangeNotifier {
     String? sort,
     String? property,
   }) {
-    List<FilterCondition> conditions = [];
+    List<Filter> filters = [];
     if (state != StateFilter.all) {
-      conditions.add(state == StateFilter.archived
-          ? const FilterCondition.isNotNull(property: 'archivedAt')
-          : const FilterCondition.isNull(property: 'archivedAt'));
+      final propertyIdx = db.articles.schema.getPropertyIndex('archivedAt');
+      filters.add(state == StateFilter.archived
+          ? NotGroup(IsNullCondition(property: propertyIdx))
+          : IsNullCondition(property: propertyIdx));
     }
     if (starred == StarredFilter.starred) {
-      conditions.add(const FilterCondition.isNotNull(property: 'starredAt'));
-    }
-
-    FilterOperation? filter;
-    if (conditions.length == 1) {
-      filter = conditions[0];
-    } else {
-      filter = FilterGroup.and(conditions);
+      final propertyIdx = db.articles.schema.getPropertyIndex('starredAt');
+      filters.add(NotGroup(IsNullCondition(property: propertyIdx)));
     }
 
     List<SortProperty> sortBy = [];
@@ -86,13 +81,17 @@ class ArticlesProvider with ChangeNotifier {
         property = sort;
         direction = Sort.asc;
       }
-      sortBy.add(SortProperty(property: property, sort: direction));
+      final propertyIdx = db.articles.schema.getPropertyIndex(property);
+      sortBy.add(SortProperty(property: propertyIdx, sort: direction));
     }
 
+    final propertiesIdx = property != null
+        ? [db.articles.schema.getPropertyIndex(property)]
+        : null;
     return db.articles.buildQuery(
-      filter: filter,
+      filter: AndGroup(filters),
       sortBy: sortBy,
-      properties: [property],
+      properties: propertiesIdx,
     );
   }
 
